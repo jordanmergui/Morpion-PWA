@@ -1,0 +1,7 @@
+{
+"name": "super morpion",
+"short_name": "Morpion",
+"lang" : "fr",
+"start_url":"index.html",
+"display": "standalone"
+}

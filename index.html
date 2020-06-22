@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Morpion</title>
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <script>
+    if ('serviceWorker' in navigator) {
+ navigator.serviceWorker.register('sw.js').then(function(registration) {
+ console.log('ServiceWorker registration successful with scope: ',
+registration.scope);
+ }).catch(function(err) {
+ // registration failed :(
+ console.log('ServiceWorker registration failed: ', err);
+ });
+ }</script>
+ <link rel="manifest" href="manifest.json">
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        .carre {
+            width: 150px;
+            height: 150px;
+        }
+
+        #titre {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            text-align: center;
+            width: 100%;
+            display: block;
+            font-family: 'Montserrat', cursive;
+            font-size: 80px;
+            padding-top: 20px;
+            color: black;
+        }
+
+        #Zonea1 {
+            border-right: solid 10px black;
+            border-bottom: solid 10px black;
+        }
+
+        #Zonea2 {
+            border-right: solid 10px black;
+            border-bottom: solid 10px black;
+            border-left: solid 10px black;
+            background-position: center; /* ligne à supprimer */
+        }
+
+        #Zonea3 {
+            border-bottom: solid 10px black;
+            border-left: solid 10px black;
+            background-position: right; /* ligne à supprimer */
+        }
+
+        #Zoneb1 {
+            border-right: solid 10px black;
+            border-bottom: solid 10px black;
+            border-top: solid 10px black;
+        }
+
+        #Zoneb2 {
+            border: solid 10px black;
+
+        }
+
+        #Zoneb3 {
+            border-left: solid 10px black;
+            border-bottom: solid 10px black;
+            border-top: solid 10px black;
+        }
+
+        #Zonec1 {
+            border-right: solid 10px black;
+            border-top: solid 10px black;
+        }
+
+        #Zonec2 {
+            border-right: solid 10px black;
+            border-left: solid 10px black;
+            border-top: solid 10px black;
+
+        }
+
+        #Zonec3 {
+            border-left: solid 10px black;
+            border-top: solid 10px black;
+        }
+
+        .jeu {
+            margin-top: 200px;
+            text-align: center;
+        }
+
+        #center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #rejouer {
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            text-align: center;
+            width: 100%;
+            display: block;
+        }
+
+        .bouton {
+            margin-bottom: 20px;
+            padding: 20px;
+            font-family: 'Montserrat', cursive;
+            font-size: 80px;
+            background-color: #C3C2C2;
+            border-radius: 20px;
+            border: none;
+        }
+    </style>
+</head>
+<body onload="Initialisation();">
+<div id="titre">Super Morpion</div>
+<div class="jeu">
+    <table id="center">
+        <tbody>
+        <tr>
+            <td class="carre" id="Zonea1" onclick="jouer('Zonea1');">&nbsp;</td>
+            <td class="carre" id="Zonea2" onclick="jouer('Zonea2');">&nbsp;&nbsp;</td>
+            <td class="carre" id="Zonea3" onclick="jouer('Zonea3');">&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="carre" id="Zoneb1" onclick="jouer('Zoneb1');">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td class="carre" id="Zoneb2" onclick="jouer('Zoneb2');">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td class="carre" id="Zoneb3" onclick="jouer('Zoneb3');">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="carre" id="Zonec1" onclick="jouer('Zonec1');">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td class="carre" id="Zonec2" onclick="jouer('Zonec2');">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td class="carre" id="Zonec3" onclick="jouer('Zonec3');">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="rejouer">
+    <button type="button" class="bouton" onclick="Initialisation();">Rejouer</button>
+</div>
+<script>
+    function Initialisation() {
+        //On cache le bouton "Rejouer"
+        document.getElementById("rejouer").style.visibility = "hidden";
+        //On définit les joueurs
+        joueurs = ['X', 'O'];
+        //Et le joueur qui commence
+        joueur = joueurs[0];
+    };
+
+    function jouer(zone) { //Recupère le nom de la zone cliquée via "zone"
+        //Si le joueur et egale au joueur 'X'
+        if (joueur === joueurs[0]) {
+            //Si la case et dejà pleine (class filled)
+            if (document.getElementById(zone).className.indexOf('filled') >= 0) {
+                //On affiche une alerte
+                alert("You can't do that...");
+            } else {
+
+                //Sinon on definit le background de la case avec l'image Croix
+                document.getElementById(zone).style.backgroundImage = "url(image-morpion/croix.png)";
+                //Et on lui ajoute la class "filled" pour ne plus pouvoir la changer
+                document.getElementById(zone).className += " filled";
+                document.getElementById(zone).textContent = "  ";
+                //On passe la main au joueur 'RONDS'
+                joueur = joueurs[1];
+            }
+        }
+        else if (joueur === joueurs[1]) { //Si le joueur et egale au joueur 'O'
+            //Si la case et dejà pleine (class filled)
+            if (document.getElementById(zone).className.indexOf('filled') >= 0) {
+                //On affiche un alerte
+                alert("You can't do that...");
+            } else {
+
+                //Sinon on definit le background de la case avec l'image Rond
+                document.getElementById(zone).style.backgroundImage = "url(image-morpion/rond.png)";
+                //Et on lui ajoute la class "filled" pour ne plus pouvoir la changer
+                document.getElementById(zone).className += " filled";
+                document.getElementById(zone).textContent = " ";
+                //On passe la main au joueur 'CROIX'
+                joueur = joueurs[0];
+            }
+        }
+        ;
+        //On fait un check :)
+        checking();
+    }
+    ;
+
+    function checking() {
+        //Definition des getelement pour racourcir le if()
+        one = document.getElementById('Zonea1').textContent;
+        two = document.getElementById('Zonea2').textContent
+        three = document.getElementById('Zonea3').textContent;
+        four = document.getElementById('Zoneb1').textContent;
+        five = document.getElementById('Zoneb2').textContent;
+        six = document.getElementById('Zoneb3').textContent;
+        seven = document.getElementById('Zonec1').textContent;
+        eight = document.getElementById('Zonec2').textContent;
+        nine = document.getElementById('Zonec3').textContent;
+        //Si 1=2=3 OU 4=5=6 OU 7=8=9 etc....
+        if (one === two && one === three ||
+            four === five && four === six ||
+            seven === eight && seven === nine ||
+            one === five && one === nine ||
+            three === five && three === seven ||
+            one === four && one === seven ||
+            two === five && two === eight ||
+            three === six && three === nine) {
+            if (joueur === joueurs[0]) {
+                alert('Player O WIN');
+            } else if (joueur === joueurs[1]) {
+                alert('Player X WIN');
+            }
+            //Rend visible le bouton rejouer
+            document.getElementById("rejouer").style.visibility = "visible";
+            document.getElementById("rejouer").onclick = function() {
+                location.reload();
+            }
+
+
+        }
+
+    }
+
+    // Ajouter vos propres fonctions
+
+</script>
+</body>
+</html>
